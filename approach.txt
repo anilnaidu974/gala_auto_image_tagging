@@ -1,0 +1,68 @@
+﻿
+GALA AUTO IMAGE-TAGGING
+
+
+Problem statement :
+
+Galas are the biggest parties of the year. Hosting firms of these events are well aware that everyone from around the world has their eyes on these nights. It can be for inspiration or for critique. It takes months of meticulous planning and delegation to host these events.
+
+One such firm has decided to take a data-driven approach for planning their gala nights going forward. Aesthetics and entertainment are the most crucial segments of these events. So, this firm has hired you to help them aggregate and classify all images. These images are published by attendees and the paparazzi on various social media channels and other sources. You are required to build an image auto-tagging model to classify these images into separate categories.
+
+Solution :
+
+The solution for image auto-tagging consists of 3 phases
+
+1. Feature extraction using deep learning model
+2. Train the model on extracted features
+3. Evaluate the model performance
+
+1. Feature extraction :
+	a. read the images using load_img keras module
+	b. resize the image with height,width as 150 and depth as 3.
+	c. subtract the mean values of imagenet data using imagenet_utils keras module.
+	d. I used resnet50 pretrained model( traine on the imagenet data) with the input_shape = (150,150,3) to extract the features.
+	e. Store all the Train Images featues into a pickle file.
+
+2. Train the model :
+	a. Load the features files
+	b. Split the features into test and train data
+	c. Use Logistic regression to train the features with multiple parameters 
+	using GridSearchCV
+	d. Storing the best model.
+
+3. Evaluation :
+	a. loading the Logistic regression model.
+	b. Do preprocessing and features extraction on Test Images
+	c. predict the labels using Logistic regression model
+	d. Generate CSV file for prediction.
+
+Code Usage : 
+ 	 
+1. Feature extraction :
+ 
+	run command - python features_extraction.py --images ‘./dataset/Train Images/’ --csv ‘./dataset/train.csv’
+
+--images = path to the Train images
+--csv = path to the train csv file
+
+This file extract the features fro train images and store pickle files of features and labels in ./features/ folder.
+
+2. Train the model :
+
+	run command - python train.py
+It will take the features from the ./features/ folder and train on the features,
+and it will save the model as ./model/regression.sav.
+
+
+3. Evaluate the model :
+
+	run command - python evaluate.py --images ‘./dataset/Test Images/’ --csv ‘./dataset/test.csv’
+
+--images = path to the Train images.
+--csv = path to the train csv file.
+
+This python file extract the features on test images and predict the labels using the saved model.
+
+Note : Model which i already trained using above approach is available in the ./model/ folder, you can directly jump to 3rd step (Evaluate the model) to test accuracy on Test Images.
+
+ 
